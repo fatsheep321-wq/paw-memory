@@ -92,3 +92,44 @@
 - `gh` 與 `vercel` CLI 未安裝，亦未偵測到 GitHub／Vercel token。
 - GitHub repository、production deployment 與公開 URL 尚未建立。
 - Production `/`、`/create`、`/m/demo` 直接訪問、重新整理及免登入狀態均尚未驗證。
+
+## 2026-09-19｜固定示例影片与真实二维码
+
+### 本轮范围
+
+- 只实现固定示例影片、指向既有 production 域名的二维码、下载与复制入口。
+- 不接数据库、用户上传、3D 或动画。
+
+### 实际改动
+
+1. 检查 `public/demo/pet-memory.mp4`：31,307,151 bytes，ISO Base Media（`isom`）MP4，检测到 `avc1`（H.264）与 `mp4a`（AAC）标签。
+2. 检查 `public/demo/pet-cover.jpg`：2,489,293 bytes，实际格式为 `image/jpeg`；画面是穿黄色雨衣、站在雨天街道上的狗狗。
+3. 保留全局媒体忽略规则，只新增 `!/public/demo/pet-memory.mp4` 精确例外；其他 MP4 仍被忽略。
+4. 精确安装 `qrcode@1.5.4` 与型别，并加入 `jsqr@1.4.0`、`pngjs@7.0.0` 作为本地二维码实际解码验证工具。
+5. 使用 `qrcode` 生成 `public/demo/paw-memory-demo-qr.png`：360 × 360、黑白、H 纠错、4 模块静区，内容固定为 `https://paw-memory404.vercel.app/m/demo`。
+6. `/m/demo` 改为移动端先显示豆包名字和真实 video；video 使用 `controls`、`playsInline`、`preload="metadata"`、封面 poster，不自动播放，加载失败时显示提示和直接视频链接。
+7. 首页新增“手机扫码体验”，提供二维码 PNG 下载、复制固定链接与当前手机直接体验入口。
+8. 页面明确标注固定示例，不宣称 AI 实时生成。
+
+### 实际验证结果
+
+- [x] `npm run generate:qr`：成功。
+- [x] `npm run verify:qr`：jsQR 实际解码结果等于 `https://paw-memory404.vercel.app/m/demo`。
+- [x] `npm run typecheck`：Exit Code 0。
+- [x] `npm run build`：Exit Code 0。
+- [x] 本地 production `/`、`/create`、`/m/demo` 均回传 HTTP 200 且关键内容存在。
+- [x] 本地封面响应为 `image/jpeg`、2,489,293 bytes。
+- [x] 本地影片响应为 `video/mp4`、31,307,151 bytes；Range `bytes=0-63` 回传 HTTP 206 与 64 bytes，不是 HTML 错误页。
+- [x] 本地二维码响应为 `image/png`、3,073 bytes。
+- [x] 暂存区敏感凭证扫描无命中，`stories/` 与原有本地 Markdown 均未提交。
+
+### Git
+
+- 功能 commit：`37cda0e41283fe0f3306661a1680b04f9ea70ca7`（`Add demo video and QR experience`）。
+- 提交使用单次作者参数，没有修改全局 Git 配置。
+
+### 待验证
+
+- Production deployment 是否已更新，以及 production 页面、封面、影片与二维码 URL 的直接访问／刷新待部署完成后检查。
+- 实际手机扫码、影片画面、声音与微信内播放未由本地自动验证，必须由使用者实测。
+- 已有部分 AI 对话转贴记录继续保留；完整原始会话仍未归档。
