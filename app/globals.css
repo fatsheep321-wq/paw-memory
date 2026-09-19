@@ -45,3 +45,110 @@ a {
     linear-gradient(90deg, rgba(147, 165, 143, 0.12) 1px, transparent 1px);
   background-size: 24px 24px;
 }
+
+/* 展示升级动效：只移动装饰层，不移动需要扫码的二维码。 */
+.hero-enter {
+  opacity: 0;
+  animation: hero-rise 720ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.hero-enter-1 { animation-delay: 40ms; }
+.hero-enter-2 { animation-delay: 120ms; }
+.hero-enter-3 { animation-delay: 210ms; }
+.hero-enter-4 { animation-delay: 300ms; }
+.hero-enter-5 { animation-delay: 390ms; }
+
+.reveal-shell {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 650ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+    transform 650ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+}
+
+.reveal-shell.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.wearable-float {
+  animation: wearable-breathe 4.8s ease-in-out infinite;
+  transform-origin: 50% 78%;
+}
+
+.outfit-fill,
+.outfit-stroke {
+  transition: fill 380ms ease, stroke 380ms ease;
+}
+
+.memory-tag-visual {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 220ms ease;
+}
+
+.wearable-preview:has(.memory-tag-button:hover) .memory-tag-visual,
+.wearable-preview:has(.memory-tag-button:focus-visible) .memory-tag-visual {
+  transform: scale(1.06) rotate(-1deg);
+}
+
+.tag-explanation {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 300ms ease, opacity 240ms ease;
+}
+
+.tag-explanation > * {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.tag-explanation.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.qr-static,
+.qr-static * {
+  animation: none !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes wearable-breathe {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-6px) rotate(0.35deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .hero-enter,
+  .reveal-shell {
+    opacity: 1;
+    transform: none;
+  }
+}

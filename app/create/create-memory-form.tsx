@@ -15,6 +15,7 @@ import {
 } from "@/lib/memories/constants";
 import { getBrowserSupabaseClient } from "@/lib/supabase/browser";
 import { getSupabasePublicConfig } from "@/lib/supabase/config";
+import { WearablePreview } from "@/app/components/wearable-preview";
 
 const initialProgress = { photo: 0, video: 0 };
 
@@ -565,6 +566,9 @@ export function CreateMemoryForm({ siteUrl }: { siteUrl: string }) {
             </li>
           ))}
         </ol>
+        <div className="mt-5">
+          <WearablePreview name={petName} compact />
+        </div>
       </aside>
 
       <div className="rounded-[2rem] border border-[var(--line)] bg-[var(--paper)] p-5 shadow-[0_20px_50px_rgba(65,58,47,0.08)] sm:p-8">
@@ -651,18 +655,31 @@ export function CreateMemoryForm({ siteUrl }: { siteUrl: string }) {
           )}
 
           {result && (
-            <div className="rounded-3xl border border-[var(--sage)] bg-[#f4f6f0] p-5 text-center">
+            <div className="rounded-3xl border border-[var(--sage)] bg-[#f4f6f0] p-5 text-center sm:p-6">
               <p className="text-sm font-semibold text-[#52634f]">发布成功</p>
               <h2 className="mt-2 text-2xl font-semibold">回忆已经可以跨设备访问</h2>
-              <img src={result.qrDataUrl} alt="此回忆公开地址的 QR Code" className="mx-auto mt-5 size-56 rounded-xl bg-white p-2" />
-              <p className="mt-4 break-all text-xs leading-5 text-[var(--muted)]">{result.shareUrl}</p>
+              <img src={result.qrDataUrl} alt="此真实回忆公开地址的动态 QR Code" className="qr-static mx-auto mt-5 size-56 rounded-xl bg-white p-2" />
+              <p className="mt-4 text-xs font-semibold text-[var(--ink)]">此动态 QR 对应本次真实回忆网址</p>
+              <p className="mt-1 break-all text-xs leading-5 text-[var(--muted)]">{result.shareUrl}</p>
+              <p className="mt-2 text-xs leading-5 text-[var(--coral-dark)]">任何持有此链接或二维码的人都可访问照片、影片与暖心话。</p>
               <div className="mt-5 flex flex-col justify-center gap-2 sm:flex-row">
-                <Link href={result.shareUrl} className="rounded-full bg-[var(--ink)] px-5 py-3 text-sm font-semibold text-white">
-                  开启公开回忆页
+                <Link href={result.shareUrl} className="rounded-full bg-[var(--ink)] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--coral-dark)]">
+                  查看回忆页
                 </Link>
-                <a href={result.qrDataUrl} download={`paw-memory-${result.id}.png`} className="rounded-full border border-[var(--line)] bg-white px-5 py-3 text-sm font-semibold">
+                <a href={result.qrDataUrl} download={`paw-memory-${result.id}.png`} className="rounded-full border border-[var(--line)] bg-white px-5 py-3 text-sm font-semibold transition-colors hover:border-[var(--sage)]">
                   下载二维码
                 </a>
+              </div>
+
+              <div className="mt-6 rounded-2xl border border-[var(--line)] bg-white/80 p-5 text-left">
+                <h3 className="font-semibold">固定到宠物服装上的使用说明</h3>
+                <ol className="mt-3 grid gap-3 text-sm leading-6 text-[var(--muted)] sm:grid-cols-2">
+                  <li><strong className="text-[var(--ink)]">1. 打印：</strong>使用下载的原始二维码，保持黑白清晰与四周留白，不要裁切或拉伸。</li>
+                  <li><strong className="text-[var(--ink)]">2. 防水：</strong>覆膜或放入透明防水牌套，避免反光膜、污渍和折痕盖住图案。</li>
+                  <li><strong className="text-[var(--ink)]">3. 固定：</strong>将牌子平整固定在背心外侧，避开宠物啃咬处，不使用尖锐或易脱落零件。</li>
+                  <li><strong className="text-[var(--ink)]">4. 测试：</strong>穿戴前后分别用不同手机扫码，确认距离、光线与公开页面都可正常开启。</li>
+                </ol>
+                <p className="mt-4 border-t border-[var(--line)] pt-3 text-xs leading-5 text-[var(--muted)]">先确认服装舒适、活动不受限，并在有人看护时使用。此网站不提供服装尺寸适配或实体制作服务。</p>
               </div>
             </div>
           )}

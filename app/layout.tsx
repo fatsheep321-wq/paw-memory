@@ -4,10 +4,10 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "爪印留聲｜把陪伴留在身邊",
-    template: "%s｜爪印留聲",
+    default: "爪印留声｜把回忆穿在身上",
+    template: "%s｜爪印留声",
   },
-  description: "把寵物的模樣、聲音與故事，做成可以隨時掃碼重溫的回憶。",
+  description: "把宠物的专属回忆牌固定在服装上，手机扫码重温照片、影片与想留下的话。",
 };
 
 function PawMark() {
@@ -48,8 +48,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <main>{children}</main>
           <footer className="border-t border-[var(--line)] bg-white/45">
             <div className="mx-auto flex max-w-6xl flex-col gap-2 px-5 py-8 text-sm text-[var(--muted)] sm:flex-row sm:items-center sm:justify-between sm:px-8">
-              <p>爪印留聲 PawStory</p>
-              <p>讓每一次想念，都有回去的入口。</p>
+              <p>爪印留声 PawStory</p>
+              <p>把回忆穿在身上，让每一次扫码都有回去的入口。</p>
             </div>
           </footer>
         </div>

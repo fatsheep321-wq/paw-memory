@@ -16,9 +16,9 @@ export default function CreatePage() {
     <section className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
       <div className="flex flex-col gap-4 border-b border-[var(--line)] pb-9 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-sm font-semibold tracking-[0.16em] text-[var(--coral-dark)]">CREATE A MEMORY</p>
-          <h1 className="mt-3 text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">建立牠的回憶</h1>
-          <p className="mt-4 max-w-2xl leading-7 text-[var(--muted)]">填写名字与暖心话，将照片和影片直接上传到私有云端空间；发布后，持有链接者无需登录即可访问。</p>
+          <p className="text-sm font-semibold tracking-[0.16em] text-[var(--coral-dark)]">CREATE A WEARABLE MEMORY</p>
+          <h1 className="mt-3 text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">建立牠的穿戴回忆</h1>
+          <p className="mt-4 max-w-2xl leading-7 text-[var(--muted)]">填写名字与暖心话，将照片和影片直接上传到私有云端空间；发布后取得真实回忆网址与动态二维码，再依说明固定到合适的宠物服装上。</p>
         </div>
         <span className={`w-fit rounded-full px-4 py-2 text-xs font-semibold ${hasEnvironmentConfig ? "bg-[var(--sage-light)] text-[#52634f]" : "bg-orange-100 text-orange-800"}`}>
           {hasEnvironmentConfig ? "云端环境变量已填写" : "云端服务尚未配置"}
