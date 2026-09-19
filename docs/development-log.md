@@ -133,3 +133,37 @@
 - Production deployment 是否已更新，以及 production 页面、封面、影片与二维码 URL 的直接访问／刷新待部署完成后检查。
 - 实际手机扫码、影片画面、声音与微信内播放未由本地自动验证，必须由使用者实测。
 - 已有部分 AI 对话转贴记录继续保留；完整原始会话仍未归档。
+
+## 2026-09-19｜Supabase 真實發布流程
+
+### 本輪範圍
+
+- 新增真實回憶的資料表、私有媒體儲存、建立表單上傳與公開讀取流程。
+- 保留既有 `/m/demo` 固定示例，不以示例資料冒充真實發布結果。
+- 本輪只完成程式與 SQL 準備；尚未連接或操作真實 Supabase 專案，也未驗證 Vercel production 流程。
+
+### 實際改動
+
+1. 新增 `supabase/setup.sql`：建立 `memories` 資料表、擁有者與已發布資料的 RLS、`pet-images`／`pet-videos` 兩個私有 bucket，以及驗證擁有者、草稿狀態、物件路徑、size 與 MIME 後原子發布的 `publish_memory` RPC。
+2. 新增 `.env.example`，列出 `NEXT_PUBLIC_SUPABASE_URL`、`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` 與固定 production `NEXT_PUBLIC_SITE_URL`；未填妥時建立頁會明確停用真實發布，不顯示假成功。
+3. 新增 Supabase browser／server clients 與公開設定讀取；前端使用 publishable key，不加入 service role key。
+4. `/create` 先驗證名字、暖心話、分享確認、檔案類型／大小及瀏覽器可解碼或載入，再進行 anonymous auth 與建立／更新 draft，無效輸入不會先建立匿名身分或草稿。
+5. 照片與影片透過 TUS 直接上傳到各自私有 bucket；同一次頁面操作中手動重試會復用 draft、物件路徑及 TUS fingerprint／既有 upload，不重新建立已確認的上傳。
+6. 每個物件上傳後先由 client 比對 Storage 回報的 size 與 MIME；發布前再次確認兩個物件，`publish_memory` RPC 也會再次核對 Storage object metadata，避免只有副檔名或前端宣告相符就發布。
+7. 只有 `publish_memory` 回傳同一筆 `published` 記錄且照片、影片路徑完整後，介面才設定發布結果並進入成功狀態；失敗時保留可重試狀態。
+8. 真實 `/m/[id]` 強制動態、每次 request 僅查詢 `published` 記錄，並為私有照片與影片即時建立短效 signed URL；`/m/demo` 分支與固定示例內容保持保留。
+
+### 實際驗證結果
+
+- [x] 獨立執行 `npm run typecheck`：Exit Code 0。
+- [x] 獨立執行 `npm run build`：Exit Code 0。
+
+### 尚未驗證
+
+- [ ] `supabase/setup.sql` 尚未在真實 Supabase 專案執行。
+- [ ] Supabase Authentication 的 Anonymous Sign-Ins 尚未在真實專案開啟或驗證。
+- [ ] 本機與 Vercel 的三個必要環境變數尚未填入真實值並驗證。
+- [ ] 尚未以兩筆不同擁有者記錄驗證資料列與 Storage object 隔離。
+- [ ] 尚未在全新／未登入瀏覽器驗證已發布 `/m/[id]` 與其 signed media 可公開讀取。
+- [ ] 尚未使用真實照片與影片驗證完整上傳、TUS 中斷恢復、size／MIME 確認及 RPC 發布。
+- [ ] 尚未部署並驗證 Vercel production `/create` 的真實上傳按鈕與完成流程。
