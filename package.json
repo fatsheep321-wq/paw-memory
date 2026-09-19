@@ -11,7 +11,8 @@
     "generate:qr": "node scripts/generate-demo-qr.mjs",
     "verify:qr": "node scripts/verify-demo-qr.mjs",
     "generate:fabrication": "tsx scripts/generate-fabrication.ts",
-    "verify:fabrication": "tsx scripts/verify-fabrication.ts"
+    "verify:fabrication": "tsx scripts/verify-fabrication.ts",
+    "verify:qr-relief": "tsx scripts/verify-qr-relief.ts"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.7",

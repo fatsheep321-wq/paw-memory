@@ -5,6 +5,8 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
+import { buildQrRelief, DEMO_OBJECT_URL } from "@/lib/fabrication/qr-relief";
+export type Animal = "dog" | "cat" | "alpaca";
 export type Accessory = "rain" | "birthday" | "snack";
 export const accessories = {
   rain: { name: "小小雨衣", title: "雨天，也要一起出门", greeting: "雨再大，有你在就是好天气。", icon: "☂", color: "#efbf53" },
@@ -12,7 +14,7 @@ export const accessories = {
   snack: { name: "小零食", title: "藏在日常里的小幸福", greeting: "你的快乐，有时只需要一块小饼干。", icon: "♡", color: "#a1b59e" },
 };
 
-export function PetAvatar({ accessory, modelUrl, mono = false }: { accessory: Accessory; modelUrl?: string; mono?: boolean }) {
+export function PetAvatar({ accessory, modelUrl, mono = false, animal = "dog", qrUrl = DEMO_OBJECT_URL }: { accessory: Accessory; modelUrl?: string; mono?: boolean; animal?: Animal; qrUrl?: string }) {
   const host = useRef<HTMLDivElement>(null);
   const [error, setError] = useState("");
   useEffect(() => {
@@ -45,18 +47,54 @@ export function PetAvatar({ accessory, modelUrl, mono = false }: { accessory: Ac
       mesh.position.set(at[0], at[1], at[2]); mesh.scale.set(size[0], size[1], size[2]); parent.add(mesh); return mesh;
     }
     const body = new THREE.Group(); pet.add(body);
-    ellipsoid(body, [0, .9, 0], [.65, .85, .55], "#c39a73");
-    ellipsoid(body, [0, 1.95, .05], [.77, .69, .63], "#d9b68b");
-    ellipsoid(body, [-.64, 1.85, -.02], [.25, .65, .31], "#88674f").rotation.z = -.3;
-    ellipsoid(body, [.64, 1.85, -.02], [.25, .65, .31], "#88674f").rotation.z = .3;
-    ellipsoid(body, [0, 1.68, .55], [.48, .31, .29], "#f3dfbe");
-    ellipsoid(body, [0, 1.83, .79], [.16, .11, .1], "#383330");
-    for (const x of [-.29, .29]) {
-      ellipsoid(body, [x, 2.04, .61], [.075, .09, .046], "#302e2a");
-      ellipsoid(body, [x - .017, 2.064, .65], [.02, .025, .015], "#ffffff");
-      ellipsoid(body, [x * 1.3, .25, .34], [.29, .22, .4], "#e5c79d");
+    if (animal === "dog") {
+      ellipsoid(body,[0,.9,0],[.65,.85,.55],"#c39a73");
+      ellipsoid(body,[0,1.95,.05],[.77,.69,.63],"#d9b68b");
+      for(const side of [-1,1]) ellipsoid(body,[side*.64,1.85,-.02],[.25,.65,.31],"#88674f").rotation.z=side*.3;
+      ellipsoid(body,[0,1.68,.55],[.48,.31,.29],"#f3dfbe");
+      ellipsoid(body,[0,1.83,.79],[.16,.11,.1],"#383330");
+      ellipsoid(body,[.66,.65,-.35],[.17,.48,.18],"#b08a62").rotation.z=-.65;
+    } else if (animal === "cat") {
+      ellipsoid(body,[0,.9,0],[.54,.85,.49],"#acb1ac");
+      ellipsoid(body,[0,1.92,.08],[.66,.57,.55],"#cbd0c7");
+      for(const side of [-1,1]) {
+        const ear=new THREE.Mesh(new THREE.ConeGeometry(.26,.6,3),material("#a4ada7"));
+        ear.position.set(side*.44,2.46,.02); ear.rotation.z=-side*.22; body.add(ear);
+        const inner=new THREE.Mesh(new THREE.ConeGeometry(.15,.37,3),material("#d8aeb0"));
+        inner.position.set(side*.44,2.47,.13); inner.rotation.z=-side*.22; body.add(inner);
+        ellipsoid(body,[side*.17,1.75,.57],[.23,.15,.1],"#f6f0e8");
+        for(let i=0;i<3;i++) {
+          const whisker=new THREE.Mesh(new THREE.CylinderGeometry(.009,.009,.39,8),material("#686c64"));
+          whisker.position.set(side*.43,1.78-i*.055,.59); whisker.rotation.z=side*(1.35+i*.18); body.add(whisker);
+        }
+      }
+      ellipsoid(body,[0,1.82,.65],[.075,.055,.035],"#b8767b");
+      const tail=new THREE.Mesh(new THREE.TorusGeometry(.43,.12,18,48,Math.PI*1.4),material("#979e96"));
+      tail.position.set(.55,.46,-.22); tail.rotation.x=.3; body.add(tail);
+      for(const y of [2.1,2.22,2.34]) ellipsoid(body,[0,y,.59],[.055,.033,.022],"#858e85");
+    } else {
+      ellipsoid(body,[0,.8,0],[.67,.65,.54],"#e9dbc5");
+      ellipsoid(body,[0,1.46,0],[.31,.74,.32],"#f1e5d0");
+      ellipsoid(body,[0,2.13,.09],[.48,.44,.42],"#eee1c7");
+      for(const side of [-1,1]) {
+        ellipsoid(body,[side*.27,2.66,.02],[.13,.44,.15],"#dfceb3").rotation.z=-side*.14;
+        ellipsoid(body,[side*.27,2.69,.15],[.064,.28,.032],"#c69691");
+      }
+      ellipsoid(body,[0,1.99,.46],[.3,.19,.23],"#d4b996");
+      ellipsoid(body,[0,2.07,.65],[.095,.057,.03],"#77624e");
+      for(let i=0;i<24;i++) {
+        const a=i*2.39996; const y=.45+(i%5)*.18;
+        ellipsoid(body,[Math.cos(a)*.52,y,Math.sin(a)*.43],[.22,.2,.2],"#eee2cf");
+      }
+      for(let i=0;i<7;i++) ellipsoid(body,[(i-3)*.105,2.44,.24],[.13,.12,.13],"#f5ecdb");
     }
-    ellipsoid(body, [.66, .65, -.35], [.17, .48, .18], "#b08a62").rotation.z = -.65;
+    for(const x of [-.27,.27]) {
+      const eyeY=animal==="alpaca"?2.18:2.04;
+      const eyeZ=animal==="alpaca"?.43:.61;
+      ellipsoid(body,[x,eyeY,eyeZ],[.06,.08,.045],"#302e2a");
+      ellipsoid(body,[x-.016,eyeY+.025,eyeZ+.04],[.018,.022,.01],"#ffffff");
+      ellipsoid(body,[x*1.3,.23,.3],[.23,.22,.33],animal==="cat"?"#e4e5dc":"#e5d2b4");
+    }
     const outfit = new THREE.Group(); pet.add(outfit);
     if (accessory === "rain") {
       ellipsoid(outfit, [0, .91, -.04], [.69, .7, .59], "#eebc42");
@@ -74,8 +112,12 @@ export function PetAvatar({ accessory, modelUrl, mono = false }: { accessory: Ac
       bowl.position.set(0, .16, .96); outfit.add(bowl);
       for (const x of [-.17, .02, .18]) ellipsoid(outfit, [x, .3, .95], [.11, .075, .11], "#c19360");
     }
+    if(animal === "alpaca" && accessory === "rain") outfit.scale.set(.9,.95,.95);
+    if(animal === "alpaca" && accessory === "birthday") outfit.position.y=.12;
     const base = new THREE.Mesh(new THREE.CylinderGeometry(1.15, 1.22, .16, 80), material("#ede2d2"));
     base.position.y = -.03; scene.add(base);
+    const plaque=new THREE.Mesh(buildQrRelief(qrUrl),new THREE.MeshStandardMaterial({vertexColors:true,roughness:.82}));
+    plaque.scale.setScalar(.012); plaque.position.set(0,.26,1.25); plaque.rotation.x=-.18; scene.add(plaque);
     let disposed = false;
     const disposeObject = (object: THREE.Object3D) => object.traverse((child) => {
       if (child instanceof THREE.Mesh) {
@@ -102,6 +144,6 @@ export function PetAvatar({ accessory, modelUrl, mono = false }: { accessory: Ac
     let frame = 0;
     const render = () => { controls.update(); renderer.render(scene, camera); frame = requestAnimationFrame(render); }; render();
     return () => { disposed = true; cancelAnimationFrame(frame); observer.disconnect(); controls.dispose(); disposeObject(scene); renderer.dispose(); renderer.domElement.remove(); };
-  }, [accessory, modelUrl, mono]);
+  }, [accessory, modelUrl, mono, animal, qrUrl]);
   return <div className="pet-canvas-wrap"><div ref={host} className="pet-canvas" role="img" aria-label="可拖动旋转的宠物摆件预览" />{error && <p className="avatar-error" role="alert">{error}</p>}<span className="canvas-hint">拖动看看它 · 双指缩放</span></div>;
 }
