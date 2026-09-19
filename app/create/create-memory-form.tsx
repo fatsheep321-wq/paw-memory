@@ -15,7 +15,7 @@ import {
 } from "@/lib/memories/constants";
 import { getBrowserSupabaseClient } from "@/lib/supabase/browser";
 import { getSupabasePublicConfig } from "@/lib/supabase/config";
-import { WearablePreview } from "@/app/components/wearable-preview";
+import { PetAvatar, accessories, type Accessory } from "@/app/components/pet-avatar";
 
 const initialProgress = { photo: 0, video: 0 };
 
@@ -300,6 +300,8 @@ function ProgressBar({ label, value }: { label: string; value: number }) {
 }
 
 export function CreateMemoryForm({ siteUrl }: { siteUrl: string }) {
+  const [selectedAccessory, setSelectedAccessory] = useState<Accessory>("rain");
+  useEffect(() => { const key = new URLSearchParams(window.location.search).get("accessory"); if (key === "rain" || key === "birthday" || key === "snack") setSelectedAccessory(key); }, []);
   const [petName, setPetName] = useState("");
   const [warmMessage, setWarmMessage] = useState("");
   const [photo, setPhoto] = useState<File | null>(null);
@@ -549,7 +551,7 @@ export function CreateMemoryForm({ siteUrl }: { siteUrl: string }) {
 
   return (
     <form onSubmit={handleSubmit} className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:gap-12">
-      <aside aria-label="建立流程">
+      <aside aria-label="建立流程"><label className="binding-label">这段故事属于哪个配件？<select className="my-3 w-full rounded-xl border border-[var(--line)] bg-white p-3" value={selectedAccessory} disabled={isLocked} onChange={(event) => setSelectedAccessory(event.target.value as Accessory)}><option value="rain">小小雨衣 · 雨天散步</option><option value="birthday">生日帽 · 生日回忆</option><option value="snack">小零食 · 日常故事</option></select></label>
         <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
           {[
             ["1", "寵物資料", "名字與想對牠說的話"],
@@ -567,7 +569,7 @@ export function CreateMemoryForm({ siteUrl }: { siteUrl: string }) {
           ))}
         </ol>
         <div className="mt-5">
-          <WearablePreview name={petName} compact />
+          <div className="companion-scene"><PetAvatar accessory={selectedAccessory} /></div><p className="small-note">{accessories[selectedAccessory].name} · 原创示例摆件，非照片生成结果</p>
         </div>
       </aside>
 
@@ -666,8 +668,8 @@ export function CreateMemoryForm({ siteUrl }: { siteUrl: string }) {
                 <Link href={result.shareUrl} className="rounded-full bg-[var(--ink)] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--coral-dark)]">
                   查看回忆页
                 </Link>
-                <Link href={`/make/${result.id}`} className="rounded-full bg-[var(--coral)] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--coral-dark)]">
-                  制作回忆牌
+                <Link href={`/studio?memory=${result.id}&accessory=${selectedAccessory}`} className="rounded-full bg-[var(--coral)] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--coral-dark)]">
+                  绑定配件与制作二维码
                 </Link>
                 <a href={result.qrDataUrl} download={`paw-memory-${result.id}.png`} className="rounded-full border border-[var(--line)] bg-white px-5 py-3 text-sm font-semibold transition-colors hover:border-[var(--sage)]">
                   下载二维码
@@ -675,14 +677,14 @@ export function CreateMemoryForm({ siteUrl }: { siteUrl: string }) {
               </div>
 
               <div className="mt-6 rounded-2xl border border-[var(--line)] bg-white/80 p-5 text-left">
-                <h3 className="font-semibold">固定到宠物服装上的使用说明</h3>
+                <h3 className="font-semibold">把故事放进实体分身的配件</h3>
                 <ol className="mt-3 grid gap-3 text-sm leading-6 text-[var(--muted)] sm:grid-cols-2">
                   <li><strong className="text-[var(--ink)]">1. 打印：</strong>使用下载的原始二维码，保持黑白清晰与四周留白，不要裁切或拉伸。</li>
                   <li><strong className="text-[var(--ink)]">2. 防水：</strong>覆膜或放入透明防水牌套，避免反光膜、污渍和折痕盖住图案。</li>
-                  <li><strong className="text-[var(--ink)]">3. 固定：</strong>将牌子平整固定在背心外侧，避开宠物啃咬处，不使用尖锐或易脱落零件。</li>
-                  <li><strong className="text-[var(--ink)]">4. 测试：</strong>穿戴前后分别用不同手机扫码，确认距离、光线与公开页面都可正常开启。</li>
+                  <li><strong className="text-[var(--ink)]">3. 固定：</strong>将二维码固定在摆件底部，或对应的雨衣、生日帽和零食配件上。</li>
+                  <li><strong className="text-[var(--ink)]">4. 测试：</strong>用另一部手机扫描每件配件，确认打开的是各自绑定的故事。</li>
                 </ol>
-                <p className="mt-4 border-t border-[var(--line)] pt-3 text-xs leading-5 text-[var(--muted)]">先确认服装舒适、活动不受限，并在有人看护时使用。此网站不提供服装尺寸适配或实体制作服务。</p>
+                <p className="mt-4 border-t border-[var(--line)] pt-3 text-xs leading-5 text-[var(--muted)]">衣服、帽子和食物配件用于宠物摆件换装；实体制作与装配需要另行打样。</p>
               </div>
             </div>
           )}

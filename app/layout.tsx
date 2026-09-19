@@ -4,10 +4,10 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "爪印留声｜把回忆穿在身上",
-    template: "%s｜爪印留声",
+    default: "PawStory 爪爪奇遇｜让陪伴拥有形状",
+    template: "%s｜爪爪奇遇",
   },
-  description: "把宠物的专属回忆牌固定在服装上，手机扫码重温照片、影片与想留下的话。",
+  description: "让照片成为宠物摆件与雕刻立牌，让可拆卸配件成为故事入口。",
 };
 
 function PawMark() {
@@ -26,24 +26,21 @@ function PawMark() {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="zh-Hant">
+    <html lang="zh-CN">
       <body>
         <div className="min-h-screen overflow-hidden">
           <header className="relative z-20 border-b border-[var(--line)] bg-[color:var(--cream)/0.88] backdrop-blur-md">
             <div className="mx-auto flex h-18 max-w-6xl items-center justify-between px-5 sm:px-8">
               <Link href="/" className="flex items-center gap-3 font-semibold tracking-[0.12em] text-[var(--ink)]">
                 <PawMark />
-                <span>爪印留聲</span>
+                <span>爪爪奇遇</span>
               </Link>
               <nav className="flex items-center gap-4 text-sm text-[var(--muted)]" aria-label="主要導覽">
-                <Link className="hidden transition-colors hover:text-[var(--ink)] md:inline" href="/sources">
-                  模型來源
-                </Link>
-                <Link className="hidden transition-colors hover:text-[var(--ink)] sm:inline" href="/make/demo">
-                  製造示例
+                <Link className="hidden transition-colors hover:text-[var(--ink)] sm:inline" href="/studio">
+                  奇遇创作台
                 </Link>
                 <Link className="rounded-full bg-[var(--ink)] px-4 py-2.5 font-medium text-white transition-colors hover:bg-[var(--coral-dark)]" href="/create">
-                  發布回憶
+                  上传故事
                 </Link>
               </nav>
             </div>
@@ -51,8 +48,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <main>{children}</main>
           <footer className="border-t border-[var(--line)] bg-white/45">
             <div className="mx-auto flex max-w-6xl flex-col gap-2 px-5 py-8 text-sm text-[var(--muted)] sm:flex-row sm:items-center sm:justify-between sm:px-8">
-              <p>爪印留声 PawStory</p>
-              <p>把回忆穿在身上，让每一次扫码都有回去的入口。</p>
+              <p>PawStory 爪爪奇遇</p>
+              <p>让陪伴拥有形状，让回忆再次发生。</p>
             </div>
           </footer>
         </div>

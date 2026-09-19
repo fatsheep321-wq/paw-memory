@@ -21,7 +21,7 @@ export default function CreatePage() {
           <p className="mt-4 max-w-2xl leading-7 text-[var(--muted)]">填写名字与暖心话，将照片和影片直接上传到私有云端空间；发布后取得真实回忆网址与动态二维码，再依说明固定到合适的宠物服装上。</p>
         </div>
         <span className={`w-fit rounded-full px-4 py-2 text-xs font-semibold ${hasEnvironmentConfig ? "bg-[var(--sage-light)] text-[#52634f]" : "bg-orange-100 text-orange-800"}`}>
-          {hasEnvironmentConfig ? "云端环境变量已填写" : "云端服务尚未配置"}
+          {hasEnvironmentConfig ? "故事上传已就绪" : "云端服务尚未配置"}
         </span>
       </div>
 
