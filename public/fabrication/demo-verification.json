@@ -1,0 +1,29 @@
+{
+  "verified": true,
+  "generatedAt": "2026-09-19T08:35:58.704Z",
+  "shareUrl": "https://paw-memory404.vercel.app/m/demo",
+  "stl": {
+    "dimensions": [
+      60,
+      42,
+      3
+    ],
+    "triangleCount": 788,
+    "edgeCount": 1182,
+    "boundaryEdgeCount": 0,
+    "nonManifoldEdgeCount": 0,
+    "reimportedWith": "Three.js STLLoader"
+  },
+  "svg": {
+    "width": 60,
+    "height": 42,
+    "viewBox": "0 0 60 42",
+    "layers": [
+      "cut-outline",
+      "engraving-content"
+    ]
+  },
+  "qrDecoded": "https://paw-memory404.vercel.app/m/demo",
+  "panelMatchesBase": true,
+  "holeQrClearance": true
+}

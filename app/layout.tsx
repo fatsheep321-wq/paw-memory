@@ -35,12 +35,15 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <PawMark />
                 <span>爪印留聲</span>
               </Link>
-              <nav className="flex items-center gap-5 text-sm text-[var(--muted)]" aria-label="主要導覽">
-                <Link className="hidden transition-colors hover:text-[var(--ink)] sm:inline" href="/m/demo">
-                  體驗示例
+              <nav className="flex items-center gap-4 text-sm text-[var(--muted)]" aria-label="主要導覽">
+                <Link className="hidden transition-colors hover:text-[var(--ink)] md:inline" href="/sources">
+                  模型來源
+                </Link>
+                <Link className="hidden transition-colors hover:text-[var(--ink)] sm:inline" href="/make/demo">
+                  製造示例
                 </Link>
                 <Link className="rounded-full bg-[var(--ink)] px-4 py-2.5 font-medium text-white transition-colors hover:bg-[var(--coral-dark)]" href="/create">
-                  開始製作
+                  發布回憶
                 </Link>
               </nav>
             </div>

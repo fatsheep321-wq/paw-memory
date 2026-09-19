@@ -2,20 +2,26 @@
   "name": "pawstory-web",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "generate:qr": "node scripts/generate-demo-qr.mjs",
-    "verify:qr": "node scripts/verify-demo-qr.mjs"
+    "verify:qr": "node scripts/verify-demo-qr.mjs",
+    "generate:fabrication": "tsx scripts/generate-fabrication.ts",
+    "verify:fabrication": "tsx scripts/verify-fabrication.ts"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.7",
     "@supabase/supabase-js": "2.116.0",
+    "jszip": "3.10.2",
     "next": "16.3.5",
+    "qrcode": "1.5.4",
     "react": "19.3.0",
     "react-dom": "19.3.0",
+    "three": "0.186.0",
     "tus-js-client": "4.3.1"
   },
   "devDependencies": {
@@ -25,10 +31,12 @@
     "@types/qrcode": "1.5.6",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
+    "@types/three": "0.186.0",
     "jsqr": "1.4.0",
     "pngjs": "7.0.0",
-    "qrcode": "1.5.4",
+    "sharp": "0.35.4",
     "tailwindcss": "4.3.3",
+    "tsx": "4.23.13",
     "typescript": "7.0.2"
   }
 }

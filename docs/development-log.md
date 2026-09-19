@@ -205,3 +205,53 @@
 - 本轮未连接真实 Supabase 项目执行照片／影片上传、TUS 中断恢复、RPC 发布、真实动态 QR 下载或跨设备公开访问；这些云端流程仍待实际环境验证。
 - 未制作或测试实体回忆牌；打印清晰度、防水封装、固定安全性与实际扫码距离仍需实物验证。
 - 既有部分 AI 对话转贴记录继续保留；完整原始会话仍未归档。
+
+## 2026-09-19｜3D 打印＋激光雕刻＋数字回忆制造展示
+
+### 本轮范围
+
+- 新增 `/make/[id]` 制造工作台、真实 Three.js 组合／分解预览、共享参数几何与 STL／SVG／ZIP 输出。
+- 保留既有 Supabase、TUS、`publish_memory`、真实 shareUrl 和动态二维码流程；没有修改 `/m/demo` 固定分支或固定示例资源。
+- 未读取或修改 `stories/`、`2026-09-19-010800-pr-local.md` 或临时审查目录；未 commit/push。
+
+### 实际实现
+
+1. 精确加入 `three@0.186.0`、`@types/three@0.186.0`、`jszip@3.10.2`、`sharp@0.35.4`、`tsx@4.23.13`；没有加入动画库。
+2. 建立唯一 `TagParameters`（mm）与共享 geometry builder。Three.js 预览和 STLExporter 使用同一带双贯穿孔的圆角底座 BufferGeometry；默认 60 × 42 × 3 mm，面板同宽高、同孔位。
+3. Three.js 预览提供 OrbitControls、镜头复位、自动旋转暂停、部件显隐、3D 打印／激光雕刻切换与分解／合拢；支持 reduced motion。QR 以独立静止检查图显示，不参加部件动画；失败时显示静态结构图和错误。
+4. 柔性链接面料参照网格与透明宠物身体均为项目自建展示几何，只解释组合关系，不提供服装／面料 STL 下载，不宣称照片还原或合身设计。
+5. `/make/demo` 明确为演示文件。真实 UUID 制作页只查询 `published` 记录的 `pet_name`，share URL 固定为 `https://paw-memory404.vercel.app/m/{id}`。
+6. ASCII A–Z／0–9 标签使用 5×7 点阵轮廓，不输出 SVG `<text>`。中文名字不会被冒充为可靠轮廓；标签为空时禁用雕刻 SVG／ZIP。
+7. SVG 使用 mm 尺寸、同值 viewBox、`cut-outline`／`engraving-content` 图层、真实 H 纠错 QR 与至少 4 modules 静区；红线只标示切割轮廓约定，黑色标示雕刻内容。
+8. ZIP 包含底座 STL、雕刻 SVG、scadqr 原 MIT LICENSE 与 `MODIFICATIONS.md`。客户端会重导 STL、检查闭合与尺寸，并实际渲染 SVG 解码 QR；只有验证通过才显示对应下载按钮。
+9. 首页主视觉改为真实 Three.js 制造组合；真实发布成功区新增 `/make/{id}` 入口，原“查看回忆页”“下载二维码”保留。
+10. 新增 `/sources`、`docs/model-sources.md`、`docs/fabrication-modifications.md` 与 `THIRD_PARTY_LICENSES/scadqr-MIT.txt`。
+
+### 来源与许可决定
+
+- scadqr `demo_tag.scad`：固定 commit `a27e1feeed8b048b730fcd2620c0021b3b52a283`，Darwin Schuppan and contributors，MIT；采用圆角底板、固定孔、QR padding 结构思路并明确标示“基于开源模型改编”。未直接分发上游 SCAD。
+- parametric-fabric-generator：固定 commit `2075e9a89a97850fd1732e9b2b7a3f9c7d933c01`，Hanno Witzleb／Xipit；无仓库级 LICENSE 且嵌入模型许可不同，只有评估，没有复制／分发，不提供其面料下载。
+- openscad-web-gui：固定 commit `759feee04f5dbf846f4608c3359d5c157256fef3`，Clemens，GPL-3.0；是工具而非模型，只有评估，没有集成或复制代码。
+
+### 自动验证结果
+
+- [x] `npm run generate:fabrication`：生成 `demo-base.stl`（39,484 bytes）、`demo-panel.svg`（33,867 bytes）、`demo-fabrication-kit.zip`（11,877 bytes）。
+- [x] `npm run verify:fabrication`：Three.js STLLoader 重导成功；bounding box 60 × 42 × 3 mm；788 triangles、1,182 unique edges、0 open edges、0 non-manifold edges。
+- [x] 固定孔不侵入 QR 区，面板与底座宽高匹配；另验证 50 × 36 × 2、67 × 48 × 3.5、90 × 65 × 6 mm 参数样本。
+- [x] SVG 为 60 mm × 42 mm、`viewBox="0 0 60 42"`，包含两个指定图层且不含 `<text>`。
+- [x] 使用 Sharp 实际渲染 SVG，再以 jsQR 解码为 `https://paw-memory404.vercel.app/m/demo`。
+- [x] ZIP 检查确认包含 STL、SVG、scadqr MIT LICENSE 与修改说明。
+
+### 待实物／环境验证
+
+- 未验证打印机、材料与激光设备公差；未提供激光功率、速度或 G-code。
+- 未验证固定强度、防水、耐用、宠物舒适度、服装合身性或实体扫码距离。
+- 没有实现照片转 3D、宠物精细模型、服装 STL 或尺寸适配。
+- 真实 Supabase production 记录的 `/make/{uuid}` 查询、跨设备下载与实物制造仍需在已配置环境和目标设备验证。
+
+### 最终工程验证补记
+
+- [x] `npm run typecheck`：Exit Code 0。
+- [x] 既有 `npm run verify:qr`：解码仍为 `https://paw-memory404.vercel.app/m/demo`，360 × 360；固定示例资源未修改。
+- [x] 再次执行 `npm run generate:fabrication` 与 `npm run verify:fabrication`：结果保持通过，验证 manifest 已更新为 `verified: true`。
+- [x] `npm run build`：Next.js 16.3.5 production build 成功；`/make/[id]` 为动态路由，`/sources` 静态生成。

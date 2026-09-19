@@ -662,9 +662,12 @@ export function CreateMemoryForm({ siteUrl }: { siteUrl: string }) {
               <p className="mt-4 text-xs font-semibold text-[var(--ink)]">此动态 QR 对应本次真实回忆网址</p>
               <p className="mt-1 break-all text-xs leading-5 text-[var(--muted)]">{result.shareUrl}</p>
               <p className="mt-2 text-xs leading-5 text-[var(--coral-dark)]">任何持有此链接或二维码的人都可访问照片、影片与暖心话。</p>
-              <div className="mt-5 flex flex-col justify-center gap-2 sm:flex-row">
+              <div className="mt-5 flex flex-col justify-center gap-2 sm:flex-row sm:flex-wrap">
                 <Link href={result.shareUrl} className="rounded-full bg-[var(--ink)] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--coral-dark)]">
                   查看回忆页
+                </Link>
+                <Link href={`/make/${result.id}`} className="rounded-full bg-[var(--coral)] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--coral-dark)]">
+                  制作回忆牌
                 </Link>
                 <a href={result.qrDataUrl} download={`paw-memory-${result.id}.png`} className="rounded-full border border-[var(--line)] bg-white px-5 py-3 text-sm font-semibold transition-colors hover:border-[var(--sage)]">
                   下载二维码
