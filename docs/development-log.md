@@ -167,3 +167,41 @@
 - [ ] 尚未在全新／未登入瀏覽器驗證已發布 `/m/[id]` 與其 signed media 可公開讀取。
 - [ ] 尚未使用真實照片與影片驗證完整上傳、TUS 中斷恢復、size／MIME 確認及 RPC 發布。
 - [ ] 尚未部署並驗證 Vercel production `/create` 的真實上傳按鈕與完成流程。
+
+## 2026-09-19｜PawStory 穿戴式回忆展示升级
+
+### 本轮范围
+
+- 将网站展示主线更新为“把回忆穿在身上”，串联宠物穿戴、专属回忆牌、手机扫码与照片／影片。
+- 保留现有 Supabase 匿名建立者、草稿、TUS 上传与重试复用、Storage 检查、`publish_memory` RPC、真实记录 URL 和动态 QR Code 流程。
+- 未修改 `/m/[id]` 页面、not-found 页面、固定示例影片组件或 `/m/demo` 固定示例内容。
+- 未新增套件、动效库、commit 或 push。
+
+### 实际改动
+
+1. 重做首页 hero、四段穿戴回忆路径、真实 demo QR 区与行动入口；移除“仅为界面 Demo、尚未启用上传”的过时说明，继续保留 `/create` 与 `/m/demo` 入口。
+2. 新增可复用 `WearablePreview`：以 SVG／CSS 分层绘制穿背心的宠物与背部回忆牌，提供珊瑚橙、鼠尾草绿、晴空蓝三种服装换色、名字预览，以及点击牌子展开扫码说明与固定示例入口。
+3. 穿戴预览明确标示为“穿戴概念预览”，并说明不是照片生成 3D、宠物模型、可打印文件或实际尺寸适配结果；示例二维码保持静止，不参与宠物浮动。
+4. 新增轻量 `IntersectionObserver` reveal；加入 hero 分层入场、穿戴轻浮动、换色与按钮 hover，并用 `prefers-reduced-motion` 停止非必要动效。页面没有开场遮罩或操作阻挡。
+5. 在建立表单侧栏复用轻量穿戴预览，名字直接绑定既有 `petName` state；未改动验证后才 auth／draft、TUS 上传重试、Storage 验证及 RPC 发布逻辑。
+6. 发布成功区继续使用真实 `result.shareUrl` 与对应动态 QR Code，明确任何持有链接者均可访问，并保留“查看回忆页”“下载二维码”；新增打印、防水封装、平整安全固定与多手机扫码测试说明。
+7. 更新站点 metadata、建立页标题说明与 footer，使文案与“把回忆穿在身上”一致，导航路由不变。
+
+### 实际验证结果
+
+- [x] `npm run typecheck`：Exit Code 0。
+- [x] `npm run verify:qr`：实际解码为 `https://paw-memory404.vercel.app/m/demo`，图片尺寸 360 × 360。
+- [x] `npm run build`：Exit Code 0；production build 编译与 TypeScript 检查成功，`/`、`/create` 静态生成，`/m/[id]` 保持动态渲染。
+
+### Git
+
+- 功能 commit：`9fd7cd7a0d95ffe9b70f26e33ed744ac907667e2`（`Redesign PawStory wearable memory experience`）。
+- 提交使用单次作者参数，未修改全局 Git 配置。
+
+### 明确未实现与待验证
+
+- 未实现照片转 3D、宠物 3D 模型、STL／可打印文件导出或服装尺寸适配。
+- 未在真实手机检查首页与建立页的视觉、触控、展开互动、reduced-motion 表现及横向溢出。
+- 本轮未连接真实 Supabase 项目执行照片／影片上传、TUS 中断恢复、RPC 发布、真实动态 QR 下载或跨设备公开访问；这些云端流程仍待实际环境验证。
+- 未制作或测试实体回忆牌；打印清晰度、防水封装、固定安全性与实际扫码距离仍需实物验证。
+- 既有部分 AI 对话转贴记录继续保留；完整原始会话仍未归档。
