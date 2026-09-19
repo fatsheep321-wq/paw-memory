@@ -227,6 +227,11 @@
 9. 首页主视觉改为真实 Three.js 制造组合；真实发布成功区新增 `/make/{id}` 入口，原“查看回忆页”“下载二维码”保留。
 10. 新增 `/sources`、`docs/model-sources.md`、`docs/fabrication-modifications.md` 与 `THIRD_PARTY_LICENSES/scadqr-MIT.txt`。
 
+### Git
+
+- 功能 commit：`a1fe6cc27231182c5bd4ad8a4b088d8ee92769f9`（`Add fabrication model and engraving workbench`）。
+- 提交使用单次作者参数，未修改全局 Git 配置。
+
 ### 来源与许可决定
 
 - scadqr `demo_tag.scad`：固定 commit `a27e1feeed8b048b730fcd2620c0021b3b52a283`，Darwin Schuppan and contributors，MIT；采用圆角底板、固定孔、QR padding 结构思路并明确标示“基于开源模型改编”。未直接分发上游 SCAD。
