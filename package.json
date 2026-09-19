@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "generate:qr": "node scripts/generate-demo-qr.mjs",
+    "verify:qr": "node scripts/verify-demo-qr.mjs"
   },
   "dependencies": {
     "next": "16.3.5",
@@ -16,8 +18,13 @@
   "devDependencies": {
     "@tailwindcss/postcss": "4.3.3",
     "@types/node": "26.6.2",
+    "@types/pngjs": "6.0.5",
+    "@types/qrcode": "1.5.6",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
+    "jsqr": "1.4.0",
+    "pngjs": "7.0.0",
+    "qrcode": "1.5.4",
     "tailwindcss": "4.3.3",
     "typescript": "7.0.2"
   }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { DemoQrCard } from "@/app/components/demo-qr-card";
 
 const steps = [
   { number: "01", title: "留下一張照片", text: "從最熟悉的眼神開始，建立牠的專屬回憶。" },
@@ -63,7 +64,23 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="border-y border-[var(--line)] bg-white/45">
+      <section id="demo-qr" className="border-y border-[var(--line)] bg-white/45">
+        <div className="mx-auto grid max-w-6xl gap-10 px-5 py-18 sm:px-8 sm:py-22 lg:grid-cols-[1fr_0.72fr] lg:items-center">
+          <div className="max-w-xl">
+            <p className="text-sm font-semibold tracking-[0.18em] text-[var(--coral-dark)]">SCAN TO REMEMBER</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] sm:text-5xl">手機掃碼體驗</h2>
+            <p className="mt-5 text-base leading-8 text-[var(--muted)]">
+              用手機相機掃描右側 QR Code，直接開啟豆包的固定示例回憶。也可以下載 PNG 製作回憶牌，或在目前手機直接開啟。
+            </p>
+            <div className="mt-7 rounded-2xl border border-[var(--line)] bg-[var(--paper)] p-5 text-sm leading-7 text-[var(--muted)]">
+              QR Code 固定指向正式網域，不使用 localhost、暫存網址或登入後才能瀏覽的連結。
+            </div>
+          </div>
+          <DemoQrCard />
+        </div>
+      </section>
+
+      <section>
         <div className="mx-auto max-w-6xl px-5 py-18 sm:px-8 sm:py-22">
           <div className="max-w-xl">
             <p className="text-sm font-semibold tracking-[0.18em] text-[var(--coral-dark)]">HOW IT WORKS</p>
@@ -81,12 +98,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-5 py-18 text-center sm:px-8 sm:py-24">
-        <p className="text-sm font-semibold tracking-[0.18em] text-[var(--sage)]">PAWSTORY</p>
-        <h2 className="mx-auto mt-4 max-w-2xl text-3xl font-semibold tracking-[-0.03em] text-balance sm:text-5xl">有些愛不會離開，只是換一種方式陪伴。</h2>
-        <Link href="/create" className="mt-8 inline-flex items-center gap-2 rounded-full bg-[var(--ink)] px-6 py-3.5 font-semibold text-white transition-colors hover:bg-[var(--coral-dark)]">
-          建立牠的回憶 <ArrowIcon />
-        </Link>
+      <section className="border-t border-[var(--line)] bg-white/45">
+        <div className="mx-auto max-w-6xl px-5 py-18 text-center sm:px-8 sm:py-24">
+          <p className="text-sm font-semibold tracking-[0.18em] text-[var(--sage)]">PAWSTORY</p>
+          <h2 className="mx-auto mt-4 max-w-2xl text-3xl font-semibold tracking-[-0.03em] text-balance sm:text-5xl">有些愛不會離開，只是換一種方式陪伴。</h2>
+          <Link href="/create" className="mt-8 inline-flex items-center gap-2 rounded-full bg-[var(--ink)] px-6 py-3.5 font-semibold text-white transition-colors hover:bg-[var(--coral-dark)]">
+            建立牠的回憶 <ArrowIcon />
+          </Link>
+        </div>
       </section>
     </>
   );
