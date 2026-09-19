@@ -1,0 +1,43 @@
+# Dependencies
+/node_modules
+
+# Next.js
+/.next
+/out
+
+# Production
+/build
+
+# Local configuration and secrets
+.env*
+!.env.example
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Abandoned local story data (not part of this project)
+/stories/
+
+# Existing local document outside this project
+/2026-09-19-010800-pr-local.md
+
+# Media files are intentionally not bundled with the app.
+# Future demo videos and GLB files will be published from Supabase Storage;
+# see docs/deployment.md. This avoids silent production omissions.
+*.mp4
+*.mov
+*.webm
+*.glb
+*.gltf

@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+:root {
+  --cream: #f8f3e9;
+  --paper: #fffdf8;
+  --ink: #2f3330;
+  --muted: #747870;
+  --coral: #dc6950;
+  --coral-dark: #b84e3a;
+  --sage: #93a58f;
+  --sage-light: #dce5d8;
+  --line: #e7dfd2;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 85% 8%, rgba(220, 105, 80, 0.09), transparent 28rem),
+    radial-gradient(circle at 5% 45%, rgba(147, 165, 143, 0.12), transparent 32rem),
+    var(--cream);
+  color: var(--ink);
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: rgba(220, 105, 80, 0.22);
+}
+
+.memory-grid {
+  background-image:
+    linear-gradient(rgba(147, 165, 143, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(147, 165, 143, 0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
